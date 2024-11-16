@@ -28,3 +28,13 @@ model Movie{
   movieVotes Int
 }
 
+model Ticket{
+  ticketId    Int    @id @default(autoincrement())
+  movieName String
+  userId Int
+  orderId Int
+  SeatNo String
+  DateAndTime DateTime
+  totalAmount Int
+}
+

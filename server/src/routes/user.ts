@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import Jwt  from "jsonwebtoken";
 import { SECERT } from "../config";
+import { AuthenticateJwt } from "../middleware";
 
 export const userRouter = express.Router();
 const client = new PrismaClient();
@@ -78,4 +79,43 @@ userRouter.post("/signin",async(req:Request,res:Response)=>{
         console.error("Internal server error", error);
         res.status(404).send({ error: "Internal server error" });
     }
-})
+});
+
+userRouter.post("/generate-ticket",AuthenticateJwt,async(req:Request,res:Response)=>{
+    try {
+        const 
+        {
+            movieName,
+            userId,
+            orderId,
+            SeatNo,
+            DateAndTime,
+            totalAmount
+        } = req.user;
+        const ticket = await client.ticket.create({
+            data:{
+                movieName,
+                userId,
+                orderId,
+                SeatNo,
+                DateAndTime,
+                totalAmount
+            }
+        });
+
+        if (ticket) {
+            const token = Jwt.sign({
+                ticketId : ticket.ticketId,
+            },SECERT,
+            {expiresIn:"1h"})
+
+            res.status(200).json({
+                message:"Ticket Generated Sucessfully!",
+                token:token
+            });
+        }
+    } catch (error) {
+        console.error("Internal server error", error);
+        res.status(404).send({ error: "Internal server error" });
+    }
+});
