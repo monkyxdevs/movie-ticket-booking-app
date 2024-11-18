@@ -18,6 +18,7 @@ const express_1 = __importDefault(require("express"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../config");
+const middleware_1 = require("../middleware");
 exports.userRouter = express_1.default.Router();
 const client = new client_1.PrismaClient();
 exports.userRouter.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -81,6 +82,34 @@ exports.userRouter.post("/signin", (req, res) => __awaiter(void 0, void 0, void 
                     token: token
                 });
             }
+        }
+    }
+    catch (error) {
+        console.error("Internal server error", error);
+        res.status(404).send({ error: "Internal server error" });
+    }
+}));
+exports.userRouter.post("/generate-ticket", middleware_1.AuthenticateJwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { movieName, userId, orderId, SeatNo, DateAndTime, totalAmount } = req.user;
+        const ticket = yield client.ticket.create({
+            data: {
+                movieName,
+                userId,
+                orderId,
+                SeatNo,
+                DateAndTime,
+                totalAmount
+            }
+        });
+        if (ticket) {
+            const token = jsonwebtoken_1.default.sign({
+                ticketId: ticket.ticketId,
+            }, config_1.SECERT, { expiresIn: "1h" });
+            res.status(200).json({
+                message: "Ticket Generated Sucessfully!",
+                token: token
+            });
         }
     }
     catch (error) {

@@ -24,8 +24,9 @@ model Movie{
   movieId    Int    @id @default(autoincrement())
   movieName String
   movieCategory String
-  movieRating Int
-  movieVotes Int
+  movieRating Float
+  movieVotes Float
+  movieImg String
 }
 
 model Ticket{
