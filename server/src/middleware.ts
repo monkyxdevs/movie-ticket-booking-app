@@ -3,13 +3,14 @@ import jwt from "jsonwebtoken";
 import { SECERT } from "./config";
 import { PrismaClient } from "@prisma/client";
 
-declare global {
-    namespace Express {
-      interface Request {
-        user?: any; 
-      }
-    }
-  }
+// declare global {
+//     namespace Express {
+//       interface Request {
+//         user?: any; 
+//         movie?:any;
+//       }
+//     }
+//   }
   
 export async function AuthenticateJwt(req: Request, res: Response, next: NextFunction) {
   const authorizationHeaders = req.header('Authorization')?.replace('Bearer ', '');
@@ -27,7 +28,7 @@ export async function AuthenticateJwt(req: Request, res: Response, next: NextFun
     if (user.email !== decoded.email) {
       return res.status(400).send({ message: "Token data does not match user data" });
     }
-    req.user = user;
+    next();
   } catch (error) {
     return res.status(400).send({ message: "Invalid or Expired Token" });
   }

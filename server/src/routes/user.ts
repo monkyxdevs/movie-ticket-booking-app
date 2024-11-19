@@ -88,17 +88,15 @@ userRouter.post("/generate-ticket",AuthenticateJwt,async(req:Request,res:Respons
             movieName,
             userId,
             orderId,
-            SeatNo,
-            DateAndTime,
+            seatNo,
             totalAmount
-        } = req.user;
+        } = req.body;
         const ticket = await client.ticket.create({
             data:{
                 movieName,
                 userId,
                 orderId,
-                SeatNo,
-                DateAndTime,
+                seatNo,
                 totalAmount
             }
         });

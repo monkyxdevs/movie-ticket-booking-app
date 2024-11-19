@@ -10,7 +10,8 @@ movieRouter.get("/",async(req:Request,res:Response)=>{
         const getAllMovies = await client.movie.findMany();
         if (getAllMovies) {
             res.status(200).json({
-                message:"Movies Fetched Successfully!"
+                message:"Movies Fetched Successfully!",
+                getAllMovies
             })
         } else{
             res.json({

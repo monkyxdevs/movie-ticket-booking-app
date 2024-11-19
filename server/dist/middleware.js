@@ -16,6 +16,14 @@ exports.AuthenticateJwt = AuthenticateJwt;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("./config");
 const client_1 = require("@prisma/client");
+// declare global {
+//     namespace Express {
+//       interface Request {
+//         user?: any; 
+//         movie?:any;
+//       }
+//     }
+//   }
 function AuthenticateJwt(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
@@ -33,7 +41,7 @@ function AuthenticateJwt(req, res, next) {
             if (user.email !== decoded.email) {
                 return res.status(400).send({ message: "Token data does not match user data" });
             }
-            req.user = user;
+            next();
         }
         catch (error) {
             return res.status(400).send({ message: "Invalid or Expired Token" });

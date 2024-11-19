@@ -1,12 +1,19 @@
+import {BrowserRouter as Router,Routes,Route } from "react-router-dom"
+import { Signin } from "./Signin"
+import { Signup } from "./Signup"
+import { HomePage } from "./HomePage"
 
 function App() {
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-    </div>
+  <Router>
+    <Routes>
+      <Route path="/home" element={<HomePage/>}/>
+      <Route path="/signin" element={<Signin/>}/>
+      <Route path="/signup" element={<Signup/>}/>
+    </Routes>
+  </Router>
+  
   )
 }
 

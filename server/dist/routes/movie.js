@@ -22,7 +22,8 @@ exports.movieRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, fun
         const getAllMovies = yield client.movie.findMany();
         if (getAllMovies) {
             res.status(200).json({
-                message: "Movies Fetched Successfully!"
+                message: "Movies Fetched Successfully!",
+                getAllMovies
             });
         }
         else {

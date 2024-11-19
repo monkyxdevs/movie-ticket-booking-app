@@ -91,14 +91,13 @@ exports.userRouter.post("/signin", (req, res) => __awaiter(void 0, void 0, void 
 }));
 exports.userRouter.post("/generate-ticket", middleware_1.AuthenticateJwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { movieName, userId, orderId, SeatNo, DateAndTime, totalAmount } = req.user;
+        const { movieName, userId, orderId, seatNo, totalAmount } = req.body;
         const ticket = yield client.ticket.create({
             data: {
                 movieName,
                 userId,
                 orderId,
-                SeatNo,
-                DateAndTime,
+                seatNo,
                 totalAmount
             }
         });
